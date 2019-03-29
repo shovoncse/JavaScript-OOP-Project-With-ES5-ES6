@@ -64,8 +64,6 @@ UI.prototype.deleteContact = function(target) {
             },1000);
         }
     }else{
-        // Show message
-        ui.showAlert('Contact Not Removed!', 'warning');
         return false;
     }
 }
