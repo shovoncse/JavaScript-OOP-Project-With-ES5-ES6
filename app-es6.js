@@ -48,30 +48,15 @@ class UI {
     }
     
     deleteContact(target) {
-        let status = false;
-        if(target.classList.contains('delete')){
-            if(confirm('Are you sure?')){
 
-                // Show Progress
-                document.querySelector('.progress').style.display = 'block';
+        target.parentElement.parentElement.remove();
+        //Remove from LS
+        Store.removeContact(target.parentElement.parentElement.children[2].textContent);
+        
+        // Show message
+        this.showAlert('Contact Removed!', 'danger');  
 
-                // Timeout 1 Second
-                setTimeout(function(){
-                status = true;   
-                document.querySelector('.progress').style.display = 'none';
-
-                target.parentElement.parentElement.remove();
-
-                //Remove from LS
-                Store.removeContact(target.parentElement.parentElement.children[2].textContent);
-
-                },1000);
-
-                
-            }
-        }
-
-        return status;
+        
     }
 
     clearFields() {
@@ -179,14 +164,28 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
 
 // X Button Event
 document.getElementById('contact-list').addEventListener('click', function(e){
+    
     // Instantiate UI
     const ui = new UI();
 
-        if(ui.deleteContact(e.target)){
-                // Show message
-                ui.showAlert('Contact Removed!', 'danger');
+    if(e.target.classList.contains('delete')){
+
+        if(confirm('Are you sure?')){
+
+            // Show Progress
+            document.querySelector('.progress').style.display = 'block';
+
+            // Timeout 1 Second
+            setTimeout(function(){
+            
+                document.querySelector('.progress').style.display = 'none';
+               
+                ui.deleteContact(e.target);
+            },1000);
+        
         }
 
+    }
     e.preventDefault();
 });
 
