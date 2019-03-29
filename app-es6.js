@@ -57,6 +57,9 @@ class UI {
     deleteContact(target) {
         if(target.classList.contains('delete')){
             target.parentElement.parentElement.remove();
+            return true;
+        }else{
+            return false;
         }
 
     }
@@ -183,15 +186,18 @@ document.getElementById('contact-list').addEventListener('click', function(e){
     // Instantiate UI
     const ui = new UI();
 
-    // Delete Book from ui
-    ui.deleteContact(e.target);
+    if(confirm('Are you sure?')){
+        if(ui.deleteContact(e.target)){
+            //Remove from LS
+            Store.removeContact(e.target.parentElement.parentElement.children[2].textContent);
 
-    //Remove from LS
-    Store.removeContact(e.target.parentElement.parentElement.children[2].textContent);
-
-    // Show message
-    ui.showAlert('Contact Removed!', 'info');
-    
+            // Show message
+            ui.showAlert('Contact Removed!', 'info');
+        }else{
+            // Show message
+            ui.showAlert('Contact Not Removed!', 'warning');
+        }
+    }
     e.preventDefault();
 
 });
